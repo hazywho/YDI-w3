@@ -11,7 +11,7 @@ export const Home = ()=>{
                 {/* bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent << this line makes it so that 
                 the background is behind area of text, is gradient, and the text is transparent */}
 
-                    "Life is but a skibidi"
+                    Hello, im zanyi
                 </h1>
 
                 <p>
