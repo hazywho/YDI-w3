@@ -1,16 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useLoader, useFrame } from '@react-three/fiber';
-import { useScroll, useGLTF } from '@react-three/drei';
+import React, { useRef, useEffect } from 'react';
+import { useGLTF, useScroll } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 
 export const Mickeymouse = () => {
-  const group = useRef(); // Ref to control the primitive object's transformations
-  const scroll = useScroll(); // Hook to get scroll offset from ScrollControls
-
-  // Load the GLB model. This hook handles memoization, caching, and suspense.
-  // IMPORTANT: Ensure './model/Marie.glb' is the correct path to your converted GLB file
+  const group = useRef();
+  const scroll = useScroll();
+  const { camera } = useThree();
   const { scene } = useGLTF('./model/Marie.glb');
 
-  // useEffect to apply initial transformations once the model's scene is loaded
+  // Initial model setup
   useEffect(() => {
     if (scene) {
       scene.rotation.y = -Math.PI / 2;
@@ -21,22 +19,28 @@ export const Mickeymouse = () => {
         }
       });
     }
-  }, [scene]); // Effect runs only when the 'scene' object (model) changes/loads
+  }, [scene]);
 
-  // useFrame hook to apply continuous animations based on scroll offset
+  // Animate based on scroll
   useFrame(() => {
-    const scrollOffset = scroll.offset; // Get the normalized scroll position (0 to 1)
-    const baseScale = 0.3; // Define the base scale for the model
-    const scaleMultiplier = 1 + scrollOffset * 2; // Adjust scale based on scroll (e.g., zooms in)
-    const finalScale = baseScale * scaleMultiplier; // Calculate the final scale
+    const t = scroll.offset;
+    const maxT = Math.min(t, 0.5);
+    const spinAmount = maxT * Math.PI * 2;
+    const scale = 1 + maxT * 1.5;
 
-    // Apply the calculated scale to the model's group
     if (group.current) {
-      group.current.scale.set(finalScale, finalScale, finalScale);
+      group.current.rotation.y = spinAmount;
+      group.current.scale.set(scale, scale, scale);
+    }
+
+    // Move camera down after 50% scroll
+    if (t > 0.5) {
+      const downT = (t - 0.5) / 0.5;
+      camera.position.y = -downT * 5;
+    } else {
+      camera.position.y = 0;
     }
   });
 
-  // Render the loaded GLB scene as a primitive Three.js object
-  // The ref 'group' allows us to manipulate its position, rotation, scale.
-  return <primitive ref={group} object={scene} dispose={null} />;
+  return <primitive ref={group} object={scene} dispose={null} position={[0, -2, 0]} />;
 };
