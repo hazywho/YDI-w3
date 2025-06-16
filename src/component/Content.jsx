@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
+import AnimatedTitle from "./AnimatedTitle";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,11 +27,16 @@ const Content = () => {
   });
 
   return (
-    <div id="about" className="min-h-screen w-screen">
+    <div id="content" className="min-h-screen w-screen">
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <p className="font-general text-sm uppercase md:text-[10px]">
-          Her Lifestyle
+        <p className="font-general text-sm uppercase md:text-[100px]">
+          Discover
         </p>  
+
+        <AnimatedTitle
+          title="Her Lifestyle, Her Legacy, Her Story"
+          containerClass="mt-5 !text-black text-center"
+        />
 
         <div className="about-subtext">
           <p>"I am human, a woman with a living, beating heart first, before I am queen!!"</p>
@@ -54,3 +60,4 @@ const Content = () => {
 };
 
 export default Content;
+
