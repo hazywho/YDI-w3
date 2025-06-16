@@ -34,7 +34,7 @@ const Content = () => {
         </p>  
 
         <AnimatedTitle
-          title="Her Lifestyle, Her Legacy, Her Story"
+          title="Her Story, Her Lifestyle, Her Legacy"
           containerClass="mt-5 !text-black text-center"
         />
 

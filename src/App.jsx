@@ -6,6 +6,7 @@ import { SceneContent } from './component/SceneContent';
 import { SidePopContent } from './component/SidePopContent';
 import Content from './component/Content';
 import History from './component/History';
+import Lifestyle from './component/Lifestyle';
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
         <NavBar />
         <Content />
         <History />
+        <Lifestyle/>
       </div>
     </>
   );
