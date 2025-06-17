@@ -7,6 +7,7 @@ import { SidePopContent } from './component/SidePopContent';
 import Content from './component/Content';
 import History from './component/History';
 import Lifestyle from './component/Lifestyle';
+import LifestyleContent from './component/LifestyleContent';
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
         <Content />
         <History />
         <Lifestyle/>
+        <LifestyleContent />
       </div>
     </>
   );

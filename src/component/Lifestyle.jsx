@@ -83,7 +83,7 @@ const Lifestyle = () => {
   const getVideoSrc = (index) => `./video/Lifestyle.mp4`;
 
   return (
-    <div id = "lifestyle"className="relative h-dvh w-screen overflow-x-hidden">
+    <div id = "lifestyle"className="bg-yellow-300 relative h-dvh w-screen overflow-x-hidden">
       {loading && (
         <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
           <div className="three-body">
@@ -163,8 +163,8 @@ const Lifestyle = () => {
         </div>
       </div>
 
-      <h1 className="special-font hero-heading absolute bottom-5 right-5 text-black">
-        G<b>A</b>MING
+      <h1 className=" bg-yellow-300 special-font hero-heading absolute bottom-5 right-5 text-black">
+        Lifestyle
       </h1>
     </div>
   );
