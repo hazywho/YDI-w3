@@ -8,6 +8,8 @@ import Content from './component/Content';
 import History from './component/History';
 import Lifestyle from './component/Lifestyle';
 import LifestyleContent from './component/LifestyleContent';
+import Art from './component/Art';
+import Contact from './component/Contact';
 
 export default function App() {
   return (
@@ -51,6 +53,8 @@ export default function App() {
         <History />
         <Lifestyle/>
         <LifestyleContent />
+        <Art />
+        <Contact />
       </div>
     </>
   );
