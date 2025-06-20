@@ -34,10 +34,11 @@ export function SidePopContent() {
     transform: 'translateY(-50%)',
     width: '300px',
     padding: '30px',
-    background: '#222',
-    color: 'white',
+    background: '#1F261F;',
+    color: '#806436',
     borderRadius: '12px',
     transition: 'transform 0.3s ease, opacity 0.3s ease',
+    shadow: true, //add shadow here
   };
 
   return (

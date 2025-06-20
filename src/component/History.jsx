@@ -122,7 +122,6 @@ const PostCanva = () => (
           }
           description="Ascending the throne in 1774, Marie Antoinette faced immediate pressures. Her youth and early extravagance at Versailles, 
           coupled with the political complexities of the ancien régime, quickly ignited public scrutiny and criticism."
-          isComingSoon
         />
       </BentoTilt>
 
@@ -137,7 +136,6 @@ const PostCanva = () => (
             }
             description="The opulence of the French court became synonymous with Marie Antoinette. Exaggerated tales of her lavish spending, extravagant hairstyles, 
             and the infamous 'Affair of the Diamond Necklace' fueled public resentment and cemented her image as 'Madame Deficit'."
-            isComingSoon
           />
         </BentoTilt>
 
@@ -151,7 +149,6 @@ const PostCanva = () => (
             }
             description="As the French Revolution intensified, Marie Antoinette became a potent symbol of royal excess and detached privilege. 
             Her unwavering support for the monarchy and perceived resistance to reform ultimately sealed the fate of the crown and her own tragic end."
-            isComingSoon
           />
         </BentoTilt>
 
@@ -165,7 +162,6 @@ const PostCanva = () => (
             }
             description="From a spirited Austrian archduchess to the controversial Queen of France,
                  Marie Antoinette's life was a dramatic saga of power, privilege, and devastating decline."
-            isComingSoon
           />
         </BentoTilt>
 

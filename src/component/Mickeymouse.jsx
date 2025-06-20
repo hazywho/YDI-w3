@@ -6,9 +6,8 @@ export const Mickeymouse = () => {
   const group = useRef();
   const scroll = useScroll();
   const { camera } = useThree();
-  const { scene } = useGLTF('./model/Marie.glb');
+  const { scene } = useGLTF('./model/untitled.glb');
 
-  // Initial model setup
   useEffect(() => {
     if (scene) {
       scene.rotation.y = -Math.PI / 2;
@@ -21,7 +20,6 @@ export const Mickeymouse = () => {
     }
   }, [scene]);
 
-  // Animate based on scroll
   useFrame(() => {
     const t = scroll.offset;
     const maxT = Math.min(t, 0.5);
@@ -33,7 +31,6 @@ export const Mickeymouse = () => {
       group.current.scale.set(scale, scale, scale);
     }
 
-    // Move camera down after 50% scroll
     if (t > 0.5) {
       const downT = (t - 0.5) / 0.5;
       camera.position.y = -downT * 5;

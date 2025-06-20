@@ -1,110 +1,178 @@
-import clsx from "clsx";
-import gsap from "gsap";
-import { useWindowScroll } from "react-use";
-import { useEffect, useRef, useState } from "react";
-import { TiLocationArrow } from "react-icons/ti";
+import React, { useState, useEffect, useRef } from 'react';
+import { useWindowScroll } from 'react-use';
+import clsx from 'clsx';
 
-import Button from "./Button";
+// --- COMPONENT DEPENDENCIES ---
+// This component requires the following packages to be installed in your project:
+// npm install clsx react-use
+//
+// You also need to add the following animation to your global CSS file (e.g., index.css):
+/*
+  @keyframes bounce {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(1); }
+  }
 
-const navItems = ["Content", "History","Lifestyle", "Art","Contact"];
+  .indicator-line.active {
+      animation: bounce 1.2s infinite ease-in-out;
+  }
+
+  button {
+      -webkit-tap-highlight-color: transparent;
+  }
+*/
+
+
+// --- CONFIGURATION ---
+
+// 1. Customize your navigation links here
+const navItems = ["Content", "History", "Lifestyle", "Art", "Contact"];
+
+// Customize your song playlist here
+const playlist = [
+    { name: "Bread", src: "/audio/1.mp3" },
+    { name: "Dawn", src: "/audio/2.mp3" },
+    { name: "Overtaken", src: "/audio/3.mp3" },
+    { name: "Animal Friends", src: "/audio/4.mp3" },
+];
+
 
 const NavBar = () => {
-  // State for toggling audio and visual indicator
+  // --- STATE MANAGEMENT ---
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
-
-  // Refs for audio and navigation container
-  const audioElementRef = useRef(null);
-  const navContainerRef = useRef(null);
-
-  const { y: currentScrollY } = useWindowScroll();
+  const [volume, setVolume] = useState(1);
+  const [isVolumeSliderVisible, setIsVolumeSliderVisible] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Toggle audio and visual indicator
-  const toggleAudioIndicator = () => {
-    setIsAudioPlaying((prev) => !prev);
-    setIsIndicatorActive((prev) => !prev);
+  // --- REFS ---
+  const audioElementRef = useRef(null);
+  const navContainerRef = useRef(null);
+  const hideTimer = useRef(null);
+
+  // --- HOOKS ---
+  const { y: currentScrollY } = useWindowScroll();
+
+  // --- HANDLER FUNCTIONS ---
+  const playNext = () => {
+    if (audioElementRef.current) {
+        audioElementRef.current.pause();
+    }
+    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % playlist.length);
   };
 
-  // Manage audio playback
-  useEffect(() => {
-    if (isAudioPlaying) {
-      audioElementRef.current.play();
-    } else {
-      audioElementRef.current.pause();
+  const playPrevious = () => {
+    if (audioElementRef.current) {
+        audioElementRef.current.pause();
     }
-  }, [isAudioPlaying]);
+    setCurrentSongIndex((prevIndex) => (prevIndex - 1 + playlist.length) % playlist.length);
+  };
+  
+  const toggleAudioIndicator = () => {
+    const audio = audioElementRef.current;
+    if (audio) {
+      if (isAudioPlaying) {
+        audio.pause();
+      } else {
+        audio.play().catch(e => console.error("Playback was prevented.", e));
+      }
+    }
+  };
 
+  const handleMouseEnter = () => {
+    clearTimeout(hideTimer.current);
+    setIsVolumeSliderVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideTimer.current = setTimeout(() => {
+      setIsVolumeSliderVisible(false);
+    }, 300);
+  };
+
+  // --- EFFECTS ---
+
+  // Effect to manage volume
   useEffect(() => {
-    if (currentScrollY === 0) {
-      // Topmost position: show navbar without floating-nav
+    if (audioElementRef.current) {
+      audioElementRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  // Effect to manage navbar visibility on scroll
+  useEffect(() => {
+    if (currentScrollY <= 10 || currentScrollY < lastScrollY) {
       setIsNavVisible(true);
-      navContainerRef.current.classList.remove("floating-nav");
     } else if (currentScrollY > lastScrollY) {
-      // Scrolling down: hide navbar and apply floating-nav
       setIsNavVisible(false);
-      navContainerRef.current.classList.add("floating-nav");
-    } else if (currentScrollY < lastScrollY) {
-      // Scrolling up: show navbar with floating-nav
-      setIsNavVisible(true);
-      navContainerRef.current.classList.add("floating-nav");
     }
-
     setLastScrollY(currentScrollY);
   }, [currentScrollY, lastScrollY]);
 
-  useEffect(() => {
-    gsap.to(navContainerRef.current, {
-      y: isNavVisible ? 0 : -100,
-      opacity: isNavVisible ? 1 : 0,
-      duration: 0.2,
-    });
-  }, [isNavVisible]);
 
+  // --- RENDER ---
   return (
     <div
       ref={navContainerRef}
-      className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6"
+      className={clsx(
+        "bg-[#F2F2F2]/80 backdrop-blur-md fixed inset-x-2 top-4 z-50 h-16 sm:inset-x-6",
+        "transition-all duration-300 ease-in-out rounded-lg shadow-md",
+        {
+          "border border-white/20": currentScrollY > 0,
+          "transform translate-y-0 opacity-100": isNavVisible,
+          "transform -translate-y-[150%] opacity-0": !isNavVisible,
+        }
+      )}
     >
       <header className="absolute top-1/2 w-full -translate-y-1/2">
-        <nav className="flex size-full items-center justify-between p-4"> <nav/>    
-          {/* Navigation Links and Audio Button */}
-          <div className="flex h-full items-center">
-            <div className="hidden md:block">
-              {navItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={`#${item.toLowerCase()}`}
-                  className="nav-hover-btn"
-                >
+        <nav className="flex size-full items-center justify-between px-4 sm:px-6">
+          <div className="text-gray-800 font-semibold truncate flex-shrink min-w-0">
+          </div>
+
+          <div className="flex items-center flex-shrink-0">
+            <div className="hidden md:flex items-center">
+              {navItems.map((item) => (
+                <a key={item} href={`#${item.toLowerCase()}`} className="text-[#0D0D0D] hover:text-[#593312] ml-8 font-medium transition-colors">
                   {item}
                 </a>
               ))}
             </div>
 
-            <button
-              onClick={toggleAudioIndicator}
-              className="ml-10 flex items-center space-x-0.5"
+            <div
+              className="relative flex items-center ml-8"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              <audio
-                ref={audioElementRef}
-                className="hidden"
-                src="/audio/loop.mp3"
-                loop
-              />
-              {[1, 2, 3, 4].map((bar) => (
-                <div
-                  key={bar}
-                  className={clsx("indicator-line", {
-                    active: isIndicatorActive,
-                  })}
-                  style={{
-                    animationDelay: `${bar * 0.1}s`,
-                  }}
+              <button onClick={playPrevious} className="p-2 rounded-full transition-transform duration-100 ease-in-out focus:outline-none transform active:scale-90">
+                <svg className="text-black" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path d="M6 18V6h2v12H6zm3.5-6L18 6v12l-8.5-6z"></path></svg>
+              </button>
+
+              <button onClick={toggleAudioIndicator} className="mx-2 flex items-center space-x-1 p-2 rounded-full transition-transform duration-100 ease-in-out focus:outline-none transform active:scale-90">
+                <audio
+                  key={currentSongIndex}
+                  ref={audioElementRef}
+                  className="hidden"
+                  src={playlist[currentSongIndex].src}
+                  autoPlay={isAudioPlaying}
+                  onPlay={() => { setIsAudioPlaying(true); setIsIndicatorActive(true); }}
+                  onPause={() => { setIsAudioPlaying(false); setIsIndicatorActive(false); }}
+                  onEnded={playNext}
                 />
-              ))}
-            </button>
+                {[1, 2, 3, 4].map((bar) => (
+                  <div key={bar} className={clsx("indicator-line rounded-full", { "w-1 h-4": true, "active": isIndicatorActive })} style={{ backgroundColor: "black", animationDelay: `${bar * 0.1}s`, animationPlayState: isIndicatorActive ? 'running' : 'paused', transform: 'scaleY(0.5)', transition: 'transform 0.2s ease-in-out' }} />
+                ))}
+              </button>
+
+              <button onClick={playNext} className="p-2 rounded-full transition-transform duration-100 ease-in-out focus:outline-none transform active:scale-90">
+                <svg className="text-black" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path d="M16 18V6l-8.5 6 8.5 6zM8 6v12H6V6h2z"></path></svg>
+              </button>
+
+              <div className={clsx("absolute top-full left-1/2 mt-3 -translate-x-1/2 p-2 bg-gray-100/80 backdrop-blur-md rounded-lg shadow-lg transition-all duration-200", { 'opacity-100 translate-y-0': isVolumeSliderVisible, 'opacity-0 -translate-y-2 pointer-events-none': !isVolumeSliderVisible })}>
+                <input type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-24 h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" aria-label="Volume control" />
+              </div>
+            </div>
           </div>
         </nav>
       </header>
@@ -112,4 +180,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;  
+export default NavBar;

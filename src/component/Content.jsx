@@ -27,20 +27,24 @@ const Content = () => {
   });
 
   return (
-    <div id="content" className="min-h-screen w-screen">
+    // Change background to black (bg-black) and default text to white (text-white)
+    <div id="content" className="min-h-screen w-screen bg-[#0E110F] text-white">
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <p className="font-general text-sm uppercase md:text-[100px]">
+        <p className="tracking-wide font-general text-sm uppercase md:text-[120px] font-extrabold p-[30px]">
           Discover
-        </p>  
+        </p> 
 
         <AnimatedTitle
-          title="Her Story, Her Lifestyle, Her Legacy"
-          containerClass="mt-5 !text-black text-center"
+          title="Her Story, Her Lifestyle, Her Legacy."
+          // Removed !text-black to inherit text-white from parent,
+          // or explicitly set to white if needed for specificity
+          containerClass="mt-5 text-white text-center"
         />
 
         <div className="about-subtext">
           <p>"I am human, a woman with a living, beating heart first, before I am queen!!"</p>
-          <p className="text-gray-500">
+          {/* Change text-white-500 to text-white for consistency or a specific shade if you have one */}
+          <p className="text-white">
             - Marie Antoinette
           </p>
         </div>
@@ -60,4 +64,3 @@ const Content = () => {
 };
 
 export default Content;
-

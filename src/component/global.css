@@ -1,0 +1,16 @@
+/* src/index.css or src/App.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Noto+Sans+Old+Italic&display=swap');
+
+/* Rest of your CSS styles */
+body {
+  font-family: 'Arial', sans-serif; /* Example default font */
+}
+
+.cinzel-decorative-font {
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.noto-sans-old-italic-font {
+  font-family: 'Noto Sans Old Italic', serif;
+}

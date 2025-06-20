@@ -14,20 +14,17 @@ import Contact from './component/Contact';
 export default function App() {
   return (
     <>
-      {/* === CANVAS SECTION (scrolls within itself for 3 pages) === */}
-      <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <ambientLight intensity={5} />
-          <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
+      <div style={{ width: '100vw', height: '100vh', position: 'relative', zIndex: 0 }}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} style={{ background: '' }}>
+          <ambientLight intensity={0.75} color="white" />
+          <directionalLight position={[6, 5, 5]} intensity={2} castShadow />
 
-          {/* Canvas-only scrolling (3 virtual pages) */}
           <ScrollControls pages={3} damping={0.2}>
             <Suspense fallback={null}>
               <SceneContent />
             </Suspense>
 
             <Scroll html>
-              {/* Optional HTML popout content during scroll */}
               <div
                 style={{
                   position: 'absolute',
@@ -39,22 +36,41 @@ export default function App() {
               >
                 <SidePopContent />
               </div>
-            </Scroll> 
+            </Scroll>
           </ScrollControls>
 
           <OrbitControls enableZoom={false} />
         </Canvas>
       </div>
 
-      {/* === LANDING PAGE SECTION — Scrolls normally === */}
-      <div>
+      <div className="bg-[#1f261f]" style={{ position: 'relative', zIndex: 1 }}>
         <NavBar />
         <Content />
         <History />
-        <Lifestyle/>
+        <Lifestyle />
         <LifestyleContent />
         <Art />
         <Contact />
+
+        <div class="flex flex-col items-center text-[#906436]">
+          <h1 class="text-[80px] font-semibold">Citations</h1>
+          <div class="text-center"> <p>Music track: Dawn by Alegendbr</p>
+              <p>Source: <a href="https://freetouse.com/music">https://freetouse.com/music</a></p>
+              <p>Free Background Music for Video</p>
+          </div> <br />
+          <div class="text-center"> <p>Music track: Overtaken by Epic Spectrum</p>
+              <p>Source: <a href="https://freetouse.com/music">https://freetouse.com/music</a></p>
+              <p>No Copyright Background Music</p>
+          </div> <br />
+          <div class="text-center"> <p>Music track: Animal Friends by Lukrembo</p>
+              <p>Source: <a href="https://freetouse.com/music">https://freetouse.com/music</a></p>
+              <p>Copyright Free Music (Free Download)</p>
+          </div> <br />
+          <div class="text-center"> <p>Music track: Bread by Lukrembo</p>
+              <p>Source: <a href="https://freetouse.com/music">https://freetouse.com/music</a></p>
+              <p>Copyright Free Music (Free Download)</p>
+          </div> <br />
+      </div>
       </div>
     </>
   );

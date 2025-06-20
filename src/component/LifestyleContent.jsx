@@ -1,156 +1,226 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const LifestyleContent = () => {
-  // Define content for each distinct scrollable section about Marie Antoinette's life
-  const sections = [
-    {
-      id: 'section-childhood',
-      number: '01',
-      title: 'Fashion and Appearance',
-      description: `Marie Antoinette was a trendsetter, known for her elaborate hairstyles and elaborate gowns. She was deeply involved in her fashion choices, even going so far as to directly consult with her dressmaker and milliner. 
-      This focus on fashion, while celebrated by some, was seen by others as frivolous and contributed to her negative public image.`,
-      media: "./images/marieAntoinetteBoatHair.png",
-      mediaAlt: "Fashion and Appearance",
-      mediaPosition: 'right' // Text Left, Image Right
-    },
-    {
-      id: 'section-marriage',
-      number: '02', 
-      title: 'Entertainment and Leisure',
-      description: "Marie Antoinette enjoyed attending balls, theater performances, and other social events at court. She also enjoyed playing cards and billiards, sometimes to excess, which concerned her husband, Louis XVI. She found refuge from court life at the Petit Trianon, where she created a private haven with the Queen's Hamlet, a picturesque, self-contained village within the palace grounds."  ,
-      media: "./images/marie private life.png",
-      mediaAlt: "Entertainment and Leisure:",
-      mediaPosition: 'left' // Image Left, Text Right
-    },
-    {
-      id: 'section-early-reign',
-      number: '03',
-      title: 'Political Role and Downfall',
-      description: `While often portrayed as solely focused on pleasure, Marie Antoinette did play a role in French politics, particularly as her husband, Louis XVI, was often indecisive. Her perceived lack of concern for the suffering of the French people, combined with her extravagant lifestyle, made her a target of public resentment and fueled the revolutionary movement.`,
-      media: "./images/mrieTheatre.png",
-      mediaAlt: "Political Role and Downfall",
-      mediaPosition: 'right'
-    },
-    {
-      id: 'section-petit-trianon',
-      number: '04',
-      title: 'Private Life',
-      description: `Despite her public image, Marie Antoinette also sought privacy and enjoyed simpler pleasures. She reportedly preferred intimate meals and enjoyed spending time with her children at the Queen's Hamlet.`,
-      media: "./images/marie private life.png",
-      mediaAlt: "Private Life",
-      mediaPosition: 'left'
-    },
-  ];
+// --- CHILD COMPONENTS ---
 
-  // Refs for each scrollable section to detect visibility
-  const sectionRefs = useRef({});
-  const [activeSectionId, setActiveSectionId] = useState(sections[0].id); // State to track the currently active section
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null, // Use the entire viewport as the scrolling container
-      rootMargin: '0px',
-      threshold: 0.5, // Trigger when 50% of the section is visible
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      let currentActive = null;
-      // Find the first intersecting entry from top to bottom
-      for (let i = 0; i < sections.length; i++) {
-        const entry = entries.find(e => e.target.id === sections[i].id);
-        if (entry && entry.isIntersecting) {
-          currentActive = entry.target.id;
-          break;
-        }
-      }
-      setActiveSectionId(currentActive);
-    }, observerOptions);
-
-    // Observe each section element identified by its ID
-    sections.forEach(section => {
-      if (sectionRefs.current[section.id]) {
-        observer.observe(sectionRefs.current[section.id]);
-      }
-    });
-
-    // Clean up the observer when the component unmounts
-    return () => {
-      sections.forEach(section => {
-        if (sectionRefs.current[section.id]) {
-          observer.unobserve(sectionRefs.current[section.id]);
-        }
-      });
-    };
-  }, [sections]);
-
+const FadingBackgrounds = ({ sections, activeSectionId }) => {
   return (
-    // Main container: full screen height, now the primary scroll container
-    // Scroll snapping ensures smooth transitions between sections
-    <div className="flex flex-col min-h-screen bg-yellow-300 font-sans text-black overflow-y-scroll snap-y snap-mandatory scroll-smooth">
-
-      {sections.map((section) => (
-        <section
+    <div className="fixed inset-0 z-0">
+      {sections.map(section => (
+        <div
           key={section.id}
-          id={section.id}
-          ref={el => sectionRefs.current[section.id] = el}
-          // Each section takes up full viewport height, snaps into place
-          className="flex flex-col md:flex-row items-center justify-center min-h-screen snap-start w-full px-6 py-12 md:px-16 md:py-24"
+          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
           style={{
-            // Apply opacity for overall section visibility
-            opacity: activeSectionId === section.id ? 1 : 0.3,
-            transition: 'opacity 0.7s ease-in-out',
+            opacity: activeSectionId === section.id ? 1 : 0,
           }}
         >
-          {/* Media Column (order changes based on mediaPosition) */}
-          <div className={`flex-1 w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 ${section.mediaPosition === 'left' ? 'order-1' : 'order-2'}
-                      transition-all duration-700 ease-in-out transform
-                      ${activeSectionId === section.id ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}` // Added transform for slide-in
-          }>
-            {section.media && (
-              <img
-                src={section.media}
-                alt={section.mediaAlt}
-                className="w-full h-auto max-h-[70vh] object-contain rounded-lg shadow-xl"
-                onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/800x500/000/FFF?text=MEDIA+LOAD+ERROR"; }}
-              />
-            )}
-          </div>
-
-          {/* Text Column (order changes based on mediaPosition) */}
-          <div className={`flex-1 w-full md:w-1/2 flex flex-col justify-center p-4 md:p-8 ${section.mediaPosition === 'left' ? 'order-2' : 'order-1'}`}>
-            <div className="max-w-md mx-auto md:mx-0"> {/* Constrain text width for readability */}
-              {section.number && (
-                <span className={`text-2xl md:text-3xl font-bold mb-4 text-black transition-all duration-500 ease-in-out transform ${activeSectionId === section.id ? 'opacity-100 translate-y-0' : 'opacity-50 -translate-y-2'}`}>
-                  {section.number}
-                </span>
-              )}
-              <h2 className={`text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 transition-all duration-700 ease-in-out transform ${activeSectionId === section.id ? 'opacity-100 translate-y-0' : 'opacity-50 translate-y-2'}`}>
-                {section.title}
-              </h2>
-              <p className={`text-lg md:text-xl leading-relaxed opacity-90 mb-8 transition-all duration-700 ease-in-out transform ${activeSectionId === section.id ? 'max-h-[500px] opacity-100 translate-y-0' : 'max-h-0 opacity-0 translate-y-4'}`}>
-                {section.description}
-              </p>
-              {activeSectionId === section.id && section.buttonText && (
-                <button className="px-8 py-4 bg-black text-yellow-300 font-bold text-lg uppercase rounded-lg shadow-xl transition-all duration-300 ease-in-out hover:bg-gray-800 hover:scale-105 self-start">
-                  {section.buttonText}
-                </button>
-              )}
-              {/* Vertical line only for active numbered sections */}
-              {activeSectionId === section.id && section.number && (
-                <div className="w-1 bg-black h-16 my-8 ml-2 opacity-50 transition-all duration-300 ease-in-out"></div>
-              )}
-            </div>
-          </div>
-        </section>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${section.backgroundMedia})` }}
+          />
+          <div className="absolute inset-0 bg-black opacity-60" />
+        </div>
       ))}
-
-      {/* Optional Footer, if desired, could be a final snap point */}
-      {/* <footer className="flex items-center justify-center min-h-[30vh] snap-start bg-black text-yellow-300 py-8">
-        <p>&copy; 2024 ZENT. All rights reserved.</p>
-      </footer> */}
-
     </div>
   );
+};
+
+export const BentoTilt = ({ children, className = "" }) => {
+  const [transformStyle, setTransformStyle] = useState("");
+  const itemRef = useRef(null);
+  const handleMouseMove = (event) => {
+    if (!itemRef.current) return;
+    const { left, top, width, height } = itemRef.current.getBoundingClientRect();
+    const relativeX = (event.clientX - left) / width;
+    const relativeY = (event.clientY - top) / height;
+    const tiltX = (relativeY - 0.5) * 5;
+    const tiltY = (relativeX - 0.5) * -5;
+    const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.98, .98, .98)`;
+    setTransformStyle(newTransform);
+  };
+  const handleMouseLeave = () => setTransformStyle("");
+  return (
+    <div
+      ref={itemRef}
+      className={`${className}`}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transform: transformStyle, transition: 'transform 0.1s ease-out' }}
+    >
+      {children}
+    </div>
+  );
+};
+
+export const BentoCard = ({ src, title, description, number }) => {
+  return (
+    <div className="relative size-full overflow-hidden rounded-lg shadow-xl bg-black/20">
+      <img src={src} alt={title} className="absolute left-0 top-0 size-full object-cover" onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/800x500/000/FFF?text=MEDIA+LOAD+ERROR"; }} />
+      <div className="relative z-10 flex size-full flex-col justify-between p-5 text-white bg-black/40 hover:bg-black/20 transition-colors duration-300">
+        <div>
+          {number && <p className="text-4xl md:text-5xl font-bold mb-2">{number}</p>}
+          <h1 className="bento-title font-black text-5xl md:text-6xl lg:text-7xl leading-tight text-white">{title}</h1>
+          {description && <p className="mt-3 text-lg md:text-xl text-white opacity-90">{description}</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- CONFETTI COMPONENT ---
+const Confetti = ({ active }) => {
+    if (!active) return null;
+
+    const confettiPieces = Array.from({ length: 30 }).map((_, index) => {
+        const colors = ['#A37C40', '#FFFFFF', '#D4AF37', '#BFB08A'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomX = Math.random() * 200 - 100;
+        const randomY = Math.random() * 200 - 100;
+        const randomDelay = Math.random() * 0.5;
+        const randomDuration = 0.5 + Math.random();
+
+        const style = {
+            '--x': `${randomX}px`,
+            '--y': `${randomY}px`,
+            backgroundColor: randomColor,
+            animation: `confetti-pop ${randomDuration}s cubic-bezier(0.25, 1, 0.5, 1) ${randomDelay}s forwards`,
+        };
+        
+        return <div key={index} className="absolute w-2 h-2 rounded-full" style={style} />;
+    });
+
+    return <>{confettiPieces}</>;
+};
+
+// Add keyframes to the document's head for the animation
+const keyframes = `
+@keyframes confetti-pop {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+`;
+// Ensure the stylesheet is only added once
+if (!document.getElementById('confetti-styles')) {
+    const styleSheet = document.createElement("style");
+    styleSheet.id = 'confetti-styles';
+    styleSheet.innerText = keyframes;
+    document.head.appendChild(styleSheet);
+}
+
+
+// --- TIMELINE COMPONENT (MODIFIED) ---
+
+const LifestyleContent = () => {
+    const [sections, setSections] = useState([
+        { id: 'section-fashion', number: '01', title: 'Fashion', description: `A trendsetter, the "it-girl". She was known for elaborate hairstyles and gowns.`, mediaPosition: 'right', backgroundMedia: "./images/marieAntoinetteBoatHair.png", isActive: false },
+        { id: 'section-entertainment', number: '02', title: 'Leisure', description: "She enjoyed balls, theater, and social events at court.", mediaPosition: 'left', backgroundMedia: "./images/mrieTheatre.png", isActive: false },
+        { id: 'section-politics', number: '03', title: 'Politics', description: `Played a role in French politics, as Louis XVI was often indecisive. Was also a victim of propaganda`, mediaPosition: 'right', backgroundMedia: "./images/marie_crumbliing.png", isActive: false },
+        { id: 'section-private-life', number: '04', title: 'Private Life', description: `She liked a more intimate space for herself, transforming and personalizing her chambers with her own tastes.`, mediaPosition: 'left', backgroundMedia: "./images/marieprivatelife.png", isActive: false },
+    ]);
+    
+    const [isTimelineVisible, setIsTimelineVisible] = useState(false);
+    
+    const timelineRef = useRef(null);
+    const sectionRefs = useRef({});
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            setIsTimelineVisible(entry.isIntersecting);
+        }, { threshold: 0.2 });
+        const currentTimelineRef = timelineRef.current;
+        if (currentTimelineRef) observer.observe(currentTimelineRef);
+        return () => { if (currentTimelineRef) observer.unobserve(currentTimelineRef); };
+    }, []);
+
+    useEffect(() => {
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setSections(prev => prev.map(s => ({ ...s, isActive: s.id === entry.target.id })));
+                }
+            });
+        }, observerOptions);
+        const currentSectionRefs = Object.values(sectionRefs.current);
+        currentSectionRefs.forEach(el => { if (el) observer.observe(el); });
+        return () => { currentSectionRefs.forEach(el => { if (el) observer.unobserve(el); }); };
+    }, []);
+
+    const activeSection = sections.find(s => s.isActive);
+    const activeIndex = sections.findIndex(s => s.isActive);
+
+    const progressPercentage = activeIndex > 0 ? (activeIndex / (sections.length - 1)) * 100 : 0;
+
+    return (
+        <div ref={timelineRef}>
+            {isTimelineVisible && (
+                // MODIFICATION: Reverted to passing the CURRENT active section's ID
+                <FadingBackgrounds sections={sections} activeSectionId={activeSection?.id} />
+            )}
+            
+            <div className="relative flex flex-col font-sans text-white snap-y snap-mandatory scroll-smooth">
+                <div 
+                    className="absolute left-1/2 transform -translate-x-1/2 z-20"
+                    style={{
+                        top: '50vh', 
+                        height: `calc((${sections.length} - 1) * 100vh)`, 
+                    }}
+                >
+                    <div 
+                      className="w-1.5 h-full"
+                      style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
+                      }}
+                    />
+                    <div 
+                      className="absolute top-0 left-0 w-1.5"
+                      style={{
+                        height: `${progressPercentage}%`,
+                        backgroundColor: '#A37C40',
+                        boxShadow: '0 0 10px #A37C40',
+                        transition: 'height 1s cubic-bezier(0.42, 0, 0.58, 1)',
+                      }}
+                    />
+                </div>
+                
+                {sections.map((section, index) => {
+                    const isPastNode = activeIndex > -1 && index < activeIndex;
+                    const nodeColor = section.isActive || isPastNode ? '#A37C40' : 'white';
+                    const isLastNode = index === sections.length - 1;
+
+                    return (
+                        <section
+                            key={section.id}
+                            id={section.id}
+                            ref={el => sectionRefs.current[section.id] = el}
+                            className="relative flex flex-row items-center justify-center min-h-screen snap-start w-full px-8 py-16 md:px-24 md:py-24 z-30"
+                        >
+                            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: nodeColor, border: '2px solid white', transition: 'background-color 0.5s ease-in-out' }}>
+                               {isLastNode && <Confetti active={section.isActive} />}
+                            </div>
+                            
+                            <div className="w-full h-full transition-opacity duration-700" style={{ opacity: section.isActive ? 1 : 0, pointerEvents: section.isActive ? 'auto' : 'none' }}>
+                                {section.isActive && (
+                                    <>
+                                        {section.mediaPosition === 'left' && (
+                                            <div className="w-full flex justify-start">
+                                                <div className="w-full md:w-6/12 -ml-4 md:-ml-8"><BentoTilt className="w-full"><BentoCard {...section} src={section.backgroundMedia} /></BentoTilt></div>
+                                            </div>
+                                        )}
+                                        {section.mediaPosition === 'right' && (
+                                            <div className="w-full flex justify-end">
+                                                <div className="w-full md:w-6/12 -mr-4 md:-mr-8"><BentoTilt className="w-full"><BentoCard {...section} src={section.backgroundMedia} /></BentoTilt></div>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </section>
+                    );
+                })}
+            </div>
+        </div>
+    );
 };
 
 export default LifestyleContent;

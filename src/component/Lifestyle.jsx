@@ -83,9 +83,11 @@ const Lifestyle = () => {
   const getVideoSrc = (index) => `./video/Lifestyle.mp4`;
 
   return (
-    <div id = "lifestyle"className="bg-yellow-300 relative h-dvh w-screen overflow-x-hidden">
+    // Main container: Set background to black and default text to white
+    <div id="lifestyle" className="bg-[#383A2F] relative h-dvh w-screen overflow-x-hidden text-white">
       {loading && (
-        <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
+        // Loading overlay: Change background to black
+        <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-black">
           <div className="three-body">
             <div className="three-body__dot"></div>
             <div className="three-body__dot"></div>
@@ -96,7 +98,8 @@ const Lifestyle = () => {
 
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75"
+        // Video frame background: Changed from blue to black for consistency
+        className="relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-black"
       >
         <div>
           <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
@@ -139,31 +142,29 @@ const Lifestyle = () => {
           />
         </div>
 
-        <h1 className="special-font hero-heading absolute bottom-5 right-5 z-40 text-blue-75">
+        {/* Text: Changed color to white */}
+        <h1 className="special-font hero-heading absolute bottom-5 right-5 z-40 text-white">
           Lifestyle
         </h1>
 
         <div className="absolute left-0 top-0 z-40 size-full">
           <div className="mt-24 px-5 sm:px-10">
-            <h1 className="special-font hero-heading text-blue-100">
+            {/* Text: Changed color to white */}
+            <h1 className="special-font hero-heading text-white">
               Her
             </h1>
 
-            <p className="mb-5 max-w-64 font-robert-regular text-blue-100">
+            {/* Paragraph text: Changed color to white */}
+            <p className="mb-5 max-w-64 font-robert-regular text-white">
               A reflection of the insulated world of the French court.
             </p>
 
-            <Button
-              id="watch-trailer"
-              title="Watch trailer"
-              leftIcon={<TiLocationArrow />}
-              containerClass="bg-yellow-300 flex-center gap-1"
-            />
           </div>
         </div>
       </div>
 
-      <h1 className=" bg-yellow-300 special-font hero-heading absolute bottom-5 right-5 text-black">
+      {/* Duplicated h1, also changed to white and removed bg-yellow-300 */}
+      <h1 className="special-font hero-heading absolute bottom-5 right-5 text-white">
         Lifestyle
       </h1>
     </div>
