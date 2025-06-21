@@ -14,3 +14,13 @@ body {
 .noto-sans-old-italic-font {
   font-family: 'Noto Sans Old Italic', serif;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar in IE, Edge, and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

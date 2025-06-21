@@ -4,17 +4,16 @@ import { ScrollControls, Scroll, OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { SceneContent } from './component/SceneContent';
 import { SidePopContent } from './component/SidePopContent';
+import LifestylePage from './component/Lifestyle';
 import Content from './component/Content';
 import History from './component/History';
-import Lifestyle from './component/Lifestyle';
-import LifestyleContent from './component/LifestyleContent';
 import Art from './component/Art';
 import Contact from './component/Contact';
 
 export default function App() {
   return (
     <>
-      <div style={{ width: '100vw', height: '100vh', position: 'relative', zIndex: 0 }}>
+      <div style={{ width: '100vw', height: '100vh', position: 'relative', zIndex: 0, scrollbarWidth: "none"}}>
         <Canvas camera={{ position: [0, 0, 5], fov: 50 }} style={{ background: '' }}>
           <ambientLight intensity={0.75} color="white" />
           <directionalLight position={[6, 5, 5]} intensity={2} castShadow />
@@ -47,8 +46,9 @@ export default function App() {
         <NavBar />
         <Content />
         <History />
-        <Lifestyle />
-        <LifestyleContent />
+        <LifestylePage />
+        {/* <Lifestyle />
+        <LifestyleContent /> */}
         <Art />
         <Contact />
 

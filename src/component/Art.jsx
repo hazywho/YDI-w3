@@ -218,7 +218,7 @@ const Art = () => {
                 ref={(el) => {
                   if (el) imageRefs.current[index] = el;
                 }}
-                className="story-img-mask absolute w-full h-full ml-48"
+                className="story-img-mask absolute w-full h-full items-center ml-16"
                 style={{
                   maxWidth: '80%',
                   maxHeight: '80%',
@@ -242,7 +242,7 @@ const Art = () => {
             <button
               onClick={goToPrevSlide}
               className={clsx(
-                "fixed left-4 top-1/2 -translate-y-1/2 p-3 bg-red-500 rounded-full text-white hover:bg-red-700 transition-all duration-200 z-[999] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75",
+                "absolute left-80 -translate-y-[200px] p-3 bg-[#808080] rounded-full text-white hover:p-3 hover:bg-[#bdbdbd] transition-all duration-200 z-[999] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75",
                 { "cursor-not-allowed opacity-50": animatingRef.current }
               )}
               aria-label="Previous image"
@@ -257,7 +257,7 @@ const Art = () => {
             <button
               onClick={goToNextSlide}
               className={clsx(
-                "fixed right-4 top-1/2 -translate-y-1/2 p-3 bg-red-500 rounded-full text-white hover:bg-red-700 transition-all duration-200 z-[999] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75",
+                "absolute right-80 -translate-y-[200px] p-3 bg-[#808080] rounded-full text-white hover:p-3 hover:bg-[#bdbdbd] transition-all duration-200 z-[999] focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75",
                 { "cursor-not-allowed opacity-50": animatingRef.current }
               )}
               aria-label="Next image"
@@ -297,10 +297,10 @@ const Art = () => {
         </div>
 
         {/* Content and buttons below the carousel */}
-        <div className="mt-8 flex w-full justify-center md:-mt-64 md:me-44 md:justify-end relative z-50">
-          <div className="flex h-full w-fit flex-col items-center md:items-start">
+        <div className="mt-8 flex w-full justify-center md:-mt-64 md:justify-center relative">
+          <div className="flex h-full w-fit flex-col items-center md:items-center">
             {/* Dynamic Text Description */}
-            <p className="mt-3 max-w-sm text-center font-circular-web text-[#967c3e] md:text-start">
+            <p className="mt-3 text-center font-circular-web text-[#967c3e] text-[40px]">
               {carouselContent[currentIndex].description}
             </p>
           </div>

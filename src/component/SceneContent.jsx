@@ -48,6 +48,7 @@ export function SceneContent() {
           maxWidth: '100vw',
           textAlign: 'center',
           lineHeight: '1.2',
+          
         }}
       >
         Marie Antoinette

@@ -30,7 +30,7 @@ const Content = () => {
     // Change background to black (bg-black) and default text to white (text-white)
     <div id="content" className="min-h-screen w-screen bg-[#0E110F] text-white">
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <p className="tracking-wide font-general text-sm uppercase md:text-[120px] font-extrabold p-[30px]">
+        <p className="tracking-wide font-general text-sm uppercase md:text-[120px] font-extrabold p-[30px] pt-40">
           Discover
         </p> 
 
