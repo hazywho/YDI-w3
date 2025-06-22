@@ -172,47 +172,46 @@ const LifestylePage = () => {
     return (
         <div id="lifestyle-page" className="bg-[#0D0D0D] text-white">
             {/* --- Initial Video Section --- */}
-            <div id="lifestyle" className="relative w-screen overflow-x-hidden">
+            <div id="lifestyle" class="relative w-screen overflow-x-hidden">
                 {loading && (
-                    <div className="flex items-center justify-center absolute z-[100] h-dvh w-screen overflow-hidden bg-black">
+                    <div class="flex items-center justify-center absolute z-[100] h-dvh w-screen overflow-hidden bg-black">
                         {/* You can replace this with your original loading animation if you have one */}
                         <p>Loading...</p>
                     </div>
                 )}
 
-                <div id="video-frame" className="relative z-10 h-dvh w-screen overflow-hidden bg-black">
+                <div id="video-frame" class="relative z-10 h-dvh w-screen overflow-hidden bg-black">
                     <video
                         src={getVideoSrc()}
                         autoPlay
                         loop
                         muted
                         playsInline
-                        className="absolute left-0 top-0 h-full w-full object-cover object-center"
+                        class="absolute left-0 top-0 h-full w-full object-cover object-center"
                         onLoadedData={handleVideoLoad}
                     />
-                     <div className="absolute left-0 top-0 z-40 flex h-full w-full items-end justify-between p-5">
-                        <div className="px-5 sm:px-10 py-[650px]">
-                            <h1 className="special-font hero-heading text-white">Her</h1>
-                            <p className="mb-5 max-w-64 font-robert-regular text-white">
-                              A reflection of the insulated world of the French court.
+                    <div class="absolute inset-0 z-40 flex flex-col sm:flex-row items-center sm:items-end justify-between p-5 sm:p-10">
+                        <div class="absolute top-0 left-0 p-5 sm:p-10 pointer-events-auto">
+                            <h1 class="text-6xl md:text-8xl special-font hero-heading text-white">Her</h1>
+                            <p class="mb-5 max-w-xs font-robert-regular text-white">
+                                A reflection of the insulated world of the French court.
                             </p>
                         </div>
-                        <h1 className="special-font hero-heading text-white">
+                        <h2 class="absolute bottom-0 right-0 p-5 pointer-events-auto special-font hero-heading text-white mt-4 sm:mt-0">
                             Lifestyle
-                        </h1>
+                        </h2>
+                    </div>
+                </div>
+
+                {/* --- Video Description Section (Your original content) --- */}
+                <div class="w-full py-24 md:py-32 bg-[#0D0D0D] relative z-20">
+                    <div class="mx-auto max-w-7xl px-10 text-center">
+                        <p class="font-semibold text-2xl md:text-4xl leading-relaxed">
+                            Marie Antoinette's lifestyle was a whirlwind of extravagance and escapism within the gilded cage of Versailles. As Queen, she became a trendsetter, championing lavish gowns, towering hairstyles, and opulent jewelry that defined European court fashion. Yet, she increasingly sought refuge from the rigid etiquette of court life in her private haven, the Petit Trianon, where she cultivated a fantasy of pastoral simplicity. This idyllic retreat, while a personal solace, further fueled public perception of a queen detached from the realities of her people, cementing her image as a symbol of royal indulgence.
+                        </p>
                     </div>
                 </div>
             </div>
-            
-            {/* --- Video Description Section (Your original content) --- */}
-            <div className="w-full py-24 md:py-32 bg-[#0D0D0D] relative z-20">
-                <div className="mx-auto max-w-7xl px-10 text-center">
-                  <p className="font-semibold text-2xl md:text-4xl leading-relaxed">
-                    Marie Antoinette's lifestyle was a whirlwind of extravagance and escapism within the gilded cage of Versailles. As Queen, she became a trendsetter, championing lavish gowns, towering hairstyles, and opulent jewelry that defined European court fashion. Yet, she increasingly sought refuge from the rigid etiquette of court life in her private haven, the Petit Trianon, where she cultivated a fantasy of pastoral simplicity. This idyllic retreat, while a personal solace, further fueled public perception of a queen detached from the realities of her people, cementing her image as a symbol of royal indulgence.
-                  </p>
-                </div>
-            </div>
-
             {/* --- Interactive Timeline Section --- */}
             <div ref={timelineRef} className="relative">
                 {/* Sticky container for the fading backgrounds */}
